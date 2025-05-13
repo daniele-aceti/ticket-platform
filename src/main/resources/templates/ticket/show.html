@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <div th:replace="~{fragments/header :: head}"></div>
+  </head>
+  <body>
+    <div class="container">
+        <h1 th:text="${showTicket.title}"></h1>
+    </div>
+  </body>
+  <footer>
+    <div th:replace="~{fragments/header :: bootstrapScript}"></div>
+  </footer>
+</html>
