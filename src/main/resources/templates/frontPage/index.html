@@ -1,91 +1,90 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <div th:replace="~{fragments/header :: head}"></div>
-  </head>
-  <body>
-    <header>
-      <div th:replace="~{fragments/navbar :: navbar}"></div>
-      <div class="text-center text-primary">
-        <h1>TICKET</h1>
-        <h3>BENVENUTO</h3>
-      </div>
-    </header>
-    <main>
-        <div th:if="${ticketList.isEmpty()}">
-            <p> La lista è vuota</p>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Lista Ticket</title>
+  <div th:replace="~{fragments/header :: head}"></div>
+</head>
+
+<body class="bg-light">
+
+  <!-- Navbar -->
+  <header class="mb-4">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div class="text-center text-primary py-3">
+      <h1 class="fw-bold">Gestione Ticket</h1>
+      <h4 class="text-muted">Benvenuto nella dashboard</h4>
+    </div>
+  </header>
+
+  <!-- Contenuto principale -->
+  <main class="container">
+    <div class="bg-white p-4 rounded shadow-sm">
+
+      <!-- Lista vuota -->
+      <div th:if="${ticketList.isEmpty()}">
+        <div class="alert alert-info text-center" role="alert">
+          La lista dei ticket è vuota.
         </div>
-        <div th:unless="${ticketList.isEmpty()}">
-      <table class="table table-striped table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Numero</th>
-            <th scope="col">Titolo</th>
-            <th scope="col">Status</th>
-            <th scope="col">Operatore</th>
-            <th scope="col">Dettaglio</th>
-            <th scope="col">Aggiungi Nota</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr th:each="ticket : ${ticketList}">
-            <th th:text="${ticket.id}"></th>
-            <td th:text="${ticket.title}"></td>
-            <td th:text="${ticket.status}"></td>
-            <th:block th:each="user : ${userList}">
-              <td th:text="${user.name}"></td>
-            </th:block>
-            <!-- DETAILS -->
-            <th:block>
+      </div>
+
+      <!-- Tabella -->
+      <div th:unless="${ticketList.isEmpty()}">
+        <table class="table table-hover align-middle">
+          <thead class="table-primary">
+            <tr>
+              <th>#</th>
+              <th>Titolo</th>
+              <th>Stato</th>
+              <th>Operatore</th>
+              <th>Dettagli</th>
+              <th>Nota</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="ticket, iterStat : ${ticketList}">
+              <td th:text="${ticket.id}"></td>
+              <td th:text="${ticket.title}"></td>
+
+              <!-- Badge per status -->
               <td>
-                <a th:href="@{|/ticket/show/${ticket.id}|}">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-list-task"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5zM3 3H2v1h1z"
-                    />
-                    <path
-                      d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1z"
-                    />
-                    <path
-                      fill-rule="evenodd"
-                      d="M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5zM2 7h1v1H2zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm1 .5H2v1h1z"
-                    />
-                  </svg>
+                <span th:text="${ticket.status}" class="badge bg-success badge-status" th:if="${ticket.status == 'Aperto'}" </span>
+                  <span th:text="${ticket.status}" class="badge bg-danger badge-status" th:if="${ticket.status == 'Chiuso'}">
+                  </span>
+              </td>
+
+              <th:block th:each="user : ${userList}">
+                <td th:text="${user.name}"></td>
+              </th:block>
+
+
+              <!-- Link dettagli -->
+              <td>
+                <a th:href="@{|/ticket/details/${ticket.id}|}" class="btn btn-outline-primary btn-sm"
+                  title="Dettagli Ticket">
+                  <img style="width:20px" src="img/details.gif"></img>
                 </a>
               </td>
-            </th:block>
-            <!-- NOTES -->
-            <th:block>
+
+              <!-- Link aggiunta nota -->
               <td>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-file-earmark-plus-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M8.5 7v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 1 0"
-                  />
-                </svg>
+                <a th:href="@{|/add_notes/${ticket.id}|}" class="btn btn-outline-success btn-sm" title="Aggiungi Nota">
+                  <img style="width:20px" src="img/add_notes.gif"></img>
+                </a>
               </td>
-            </th:block>
-          </tr>
-        </tbody>
-      </table>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </main>
-    <footer>
-      <div th:replace="~{fragments/header :: bootstrapScript}"></div>
-    </footer>
-  </body>
+
+    </div>
+  </main>
+
+  <!-- Script Bootstrap -->
+  <footer class="mt-5">
+    <div th:replace="~{fragments/header :: bootstrapScript}"></div>
+  </footer>
+</body>
+
 </html>

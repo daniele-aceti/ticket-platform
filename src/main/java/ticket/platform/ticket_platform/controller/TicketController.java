@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.validation.Valid;
 import ticket.platform.ticket_platform.model.Ticket;
 import ticket.platform.ticket_platform.repository.CategoryRepository;
+import ticket.platform.ticket_platform.repository.NotesRepository;
 import ticket.platform.ticket_platform.repository.TicketRepository;
 import ticket.platform.ticket_platform.repository.UserRepository;
 
@@ -23,16 +24,18 @@ import ticket.platform.ticket_platform.repository.UserRepository;
 @RequestMapping("/ticket")
 public class TicketController {
 
+    private NotesRepository notesRepository;
     private TicketRepository ticketRepository;
     private CategoryRepository categoryRepository;
     private UserRepository userRepository;
 
     @Autowired
     public TicketController(TicketRepository ticketRepository, CategoryRepository categoryRepository,
-            UserRepository userRepository) {
+            UserRepository userRepository, NotesRepository notesRepository) {
         this.ticketRepository = ticketRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
+        this.notesRepository = notesRepository;
     }
 
     @GetMapping
@@ -67,12 +70,13 @@ public class TicketController {
         return "frontPage/index";
     }
 
-    @GetMapping("/show/{id}")
-    public String showTicket(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/details/{id}")
+    public String detailsTicket(@PathVariable("id") Long id, Model model) {
         Optional<Ticket> optTicket = ticketRepository.findById(id);
         if (optTicket.isPresent()) {
-            model.addAttribute("showTicket", optTicket.get());
-            return "ticket/show";
+            model.addAttribute("detailsTicket", optTicket.get());
+
+            return "ticket/details";
         }
         return "error/errorPage";
     }

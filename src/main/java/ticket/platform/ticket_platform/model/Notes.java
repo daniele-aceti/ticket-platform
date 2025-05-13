@@ -20,6 +20,9 @@ public class Notes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "I valori inseriti non sono corretti")
+    private String author;
+
     @NotBlank(message = "Inserisci una descrizione corretta, il minimo dei caratteri è 10")
     @Min(value = 10)
     private String notesDescription;

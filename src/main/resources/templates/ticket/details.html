@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <title th:text="*{title}">Dettaglio Ticket</title>
+  <div th:replace="~{fragments/header :: head}"></div>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .card {
+      margin-top: 50px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+    }
+
+    .badge-status {
+      font-size: 1rem;
+      padding: 0.5em 1em;
+      border-radius: 0.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container py-5">
+    <div class="card p-4" th:object="${detailsTicket}">
+      <div class="card-body">
+        <h1 class="card-title display-6 text-primary fw-bold mb-3" th:text="*{title}">Titolo Ticket</h1>
+        <span class="badge bg-success badge-status" th:if="*{status == 'Aperto'}" th:text="*{status}"></span>
+        <span class="badge bg-danger badge-status" th:if="*{status == 'Chiuso'}" th:text="*{status}"></span>
+        <hr class="my-4">
+        <h5 class="text-muted">Descrizione</h5>
+        <p class="fs-5" th:text="*{ticketDescription}"></p>
+        <hr class="my-4">
+        <h5 class="text-muted">Utente:</h5>
+        <p class="fs-5" th:text="*{user.name}"></p>
+        <h5 class="text-muted">Email:</h5>
+        <p class="fs-6 text-muted" th:text="*{user.email}"></p>
+        <h5 class="text-muted">Note:</h5>
+        <div th:each="note : ${detailsTicket.notes}">
+          <div class="alert alert-info">
+            <p th:text="*{note.content}"></p>
+            <p class="text-muted" th:text="*{note.createdDate}"></p>
+          </div>
+        </div>
+        <a class="btn btn-primary mt-3" th:href="@{/ticket}">Torna alla lista</a>
+      </div>
+    </div>
+
+    <footer>
+      <div th:replace="~{fragments/header :: bootstrapScript}"></div>
+    </footer>
+</body>
+
+</html>
