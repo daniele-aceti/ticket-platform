@@ -10,8 +10,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Notes {
@@ -20,14 +21,14 @@ public class Notes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "I valori inseriti non sono corretti")
-    private String author;
+     @NotBlank(message = "I valori inseriti non sono corretti") 
+    private String author; 
 
-    @NotBlank(message = "Inserisci una descrizione corretta, il minimo dei caratteri è 10")
-    @Min(value = 10)
+    @NotBlank(message = "La descrizione non può essere vuota")
+    @Size(min = 10, message = "Inserisci una descrizione corretta, il minimo dei caratteri è 10")
     private String notesDescription;
 
-    @NotBlank(message = "Seleziona almeno una delle due opzioni")
+    @NotNull(message = "Seleziona almeno una delle due opzioni")
     @DateTimeFormat(pattern = "yyy-MM-dd")
     private LocalDate notesCreationDate;
 
@@ -77,6 +78,14 @@ public class Notes {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
 }

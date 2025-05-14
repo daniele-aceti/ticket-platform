@@ -1,12 +1,80 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <div th:replace="~{fragments/header :: head}"></div>
-  </head>
-  <body>
- <h1>ENTRA</h1>
-  </body>
-  <footer>
+
+<head>
+  <title>Creazione Ticket</title>
+  <div th:insert="~{fragments/header :: head}"></div>
+</head>
+
+<body class="bg-light">
+
+  <header>
+    <div class="text-center text-primary py-4">
+      <h1 class="fw-bold">AGGIUNGI NOTA</h1>
+      <h4 class="text-muted">Inserisci i dettagli per il nuovo ticket</h4>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <form id="ticket-form" th:object="${notes}" th:action="@{/add_notes}" method="post">
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Seleziona Utente</label>
+            <select class="form-select" th:field="*{user}" th:errorClass="is-invalid">
+              <option th:each="user : ${userList}" th:value="${user.id}" th:text="${user.name}"></option>
+            </select>
+            <div class="invalid-feedback">
+              Seleziona un utente valido.
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Autore</label>
+            <input type="text" class="form-control" id="author" th:field="*{author}" th:errorClass="is-invalid">
+            <div class="invalid-feedback">
+              Inserisci un autore valido.
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-12">
+            <label class="form-label text-dark">Descrizione</label>
+            <textarea class="form-control" id="notesDescription" th:field="*{notesDescription}"
+              th:errorClass="is-invalid"></textarea>
+            <div class="invalid-feedback">
+              Inserisci una descrizione valida.
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label text-dark">Data Creazione</label>
+            <input type="date" class="form-control" id="notesCreationDate" th:field="*{notesCreationDate}"
+              th:errorClass="is-invalid" />
+            <div class="invalid-feedback">
+              Seleziona una data valida.
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <a class="btn btn-primary btn-lg" type="submit">Crea Nota</a>
+        </div>
+    </div>
+    <a class="btn btn-primary mt-3" th:href="@{/ticket}">Torna alla lista</a>
+    </div>
+    </form>
+    </div>
+  </main>
+
+  <footer class="mt-5">
     <div th:replace="~{fragments/header :: bootstrapScript}"></div>
   </footer>
+
+</body>
+
 </html>

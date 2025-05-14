@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
 import ticket.platform.ticket_platform.model.Ticket;
@@ -61,13 +62,14 @@ public class TicketController {
 
     @PostMapping("/create")
     public String createTicketPost(@Valid @ModelAttribute("newTicket") Ticket formNewTicket, BindingResult bindingResult,
-            Model model) {
+            Model model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "ticket/create";
         }
         ticketRepository.save(formNewTicket);
 
-        return "frontPage/index";
+        redirectAttributes.addFlashAttribute("messageAddNote", "Il ticket è stato aggiunto e assegnato");
+         return "redirect:/ticket";
     }
 
     @GetMapping("/details/{id}")

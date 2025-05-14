@@ -6,7 +6,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -19,8 +21,13 @@ public class Role {
     @NotBlank
     private String roleName;
 
-    @OneToMany(mappedBy = "role")
-    private List<User> users;
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> user;
 
     public Long getId() {
         return id;
@@ -38,12 +45,14 @@ public class Role {
         this.roleName = roleName;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public List<User> getUser() {
+        return user;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setUser(List<User> user) {
+        this.user = user;
     }
+
+ 
 
 }
