@@ -3,7 +3,9 @@
   <header th:fragment="navbar">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
-        <a class="navbar-brand" href="http://localhost:8080/ticket">TICKET</a>
+        <a class="navbar-brand" href="http://localhost:8080/ticket" >
+          <img style="width: 40px;" src="/img/logo.jpg" alt="logo">
+        </a>
         <button
           class="navbar-toggler"
           type="button"
@@ -17,9 +19,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
-            </li>
             <li class="nav-item">
               <a class="nav-link" href="http://localhost:8080/ticket/create"
                 >Nuovo Ticket</a
@@ -45,6 +44,13 @@
             </button>
           </form>
         </div>
+                 <a
+            class="btn btn-outline-success"
+            type="submit"
+            th:href="@{/logout}"
+          >
+            <img style="width: 20px" src="/img/logout.gif" alt="logout" />
+      </a>
       </div>
     </nav>
   </header>

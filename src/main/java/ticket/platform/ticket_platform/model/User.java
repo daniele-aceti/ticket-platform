@@ -7,6 +7,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
@@ -19,14 +21,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message="I valori inseriti non sono corretti")
+    @NotBlank(message = "I valori inseriti non sono corretti")
     private String name;
 
     @NotBlank(message = "Inserisci una email valida")
     private String email;
 
     @NotBlank
-    @Size(max=20, min=5,message = "Inserisci una password valida")
+    @Size(max = 20, min = 5, message = "Inserisci una password valida")
     private String password;
 
     private boolean disponibile;
@@ -38,9 +40,13 @@ public class User {
     private List<Notes> notes;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     private List<Role> role;
 
-    
     public Long getId() {
         return id;
     }

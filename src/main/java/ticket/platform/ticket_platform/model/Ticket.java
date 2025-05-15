@@ -37,7 +37,7 @@ public class Ticket {
     private String status;
 
     @NotNull(message="Inserire una data corretta")
-    @DateTimeFormat(pattern = "yyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate ticketCreationDate;
 
     @ManyToOne

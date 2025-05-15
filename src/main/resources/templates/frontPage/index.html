@@ -20,12 +20,18 @@
 
   <!-- Contenuto principale -->
   <main class="container">
-      <th:block th:if="${messageAddNote != null}">
-            <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-                <span th:text="${messageAddNote}"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </th:block>
+    <th:block th:if="${messageAddNote != null}">
+      <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+        <span th:text="${messageAddNote}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </th:block>
+    <th:block th:if="${messageAddTicket != null}">
+      <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+        <span th:text="${messageAddTicket}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </th:block>
     <div class="bg-white p-4 rounded shadow-sm">
 
       <!-- Lista vuota -->
@@ -40,12 +46,12 @@
         <table class="table table-hover align-middle">
           <thead class="table-primary">
             <tr>
-              <th>#</th>
+              <th>N.</th>
               <th>Titolo</th>
               <th>Stato</th>
               <th>Operatore</th>
-              <th>Dettagli</th>
-              <th>Nota</th>
+              <th>Vedi Dettagli</th>
+              <th>Aggiungi Nota</th>
             </tr>
           </thead>
           <tbody>
@@ -55,28 +61,26 @@
 
               <!-- Badge per status -->
               <td>
-                <span th:text="${ticket.status}" class="badge bg-success badge-status" th:if="${ticket.status == 'Aperto'}" </span>
-                  <span th:text="${ticket.status}" class="badge bg-danger badge-status" th:if="${ticket.status == 'Chiuso'}">
-                  </span>
+                <span th:text="${ticket.status}" class="badge bg-danger badge-status"
+                  th:if="${ticket.status == 'Da Fare'}" </span>
+                  <span th:text="${ticket.status}" class="badge bg-warning badge-status"
+                    th:if="${ticket.status == 'In Corso'}"></span>
+                  <span th:text="${ticket.status}" class="badge bg-success badge-status"
+                    th:if="${ticket.status == 'Completato'}"></span>
               </td>
-
-              <th:block th:each="user : ${userList}">
-                <td th:text="${user.name}"></td>
-              </th:block>
-
-
+                <td th:text="${ticket.user.name}"></td>
               <!-- Link dettagli -->
               <td>
                 <a th:href="@{|/ticket/details/${ticket.id}|}" class="btn btn-outline-primary btn-sm"
                   title="Dettagli Ticket">
-                  <img style="width:20px" src="img/details.gif"></img>
+                  <img style="width:20px" src="img/details.gif" alt="details"></img>
                 </a>
               </td>
 
               <!-- Link aggiunta nota -->
               <td>
                 <a th:href="@{|/add_notes/${ticket.id}|}" class="btn btn-outline-success btn-sm" title="Aggiungi Nota">
-                  <img style="width:20px" src="img/add_notes.gif"></img>
+                  <img style="width:20px" src="img/add_notes.gif" alt="add_notes"></img>
                 </a>
               </td>
             </tr>
