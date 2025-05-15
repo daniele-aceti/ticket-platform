@@ -16,6 +16,7 @@ public class DatabaseUserDetails implements UserDetails {
     private final Long id;
     private final String name;
     private final String password;
+    private final Boolean active;
     private final List<GrantedAuthority> authorities;
     private final String email;
 
@@ -24,6 +25,7 @@ public class DatabaseUserDetails implements UserDetails {
         this.name = user.getName();
         this.password = user.getPassword();
         this.email = user.getEmail();
+        this.active = user.isActive();
         this.authorities = new ArrayList<>();
         for (Role ruolo : user.getRole()) {
             this.authorities.add(new SimpleGrantedAuthority(ruolo.getRoleName()));
@@ -55,5 +57,9 @@ public class DatabaseUserDetails implements UserDetails {
     @Override
     public String getUsername() {
         return this.email;
+    }
+
+    public Boolean getActive() {
+        return active;
     }
 }

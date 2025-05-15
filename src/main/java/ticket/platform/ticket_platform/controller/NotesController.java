@@ -42,14 +42,14 @@ public class NotesController {
         notes.setTicket(ticketRepository.findById(idTikcet).get());
         model.addAttribute("notes", notes);
         model.addAttribute("userList", userRepository.findAll());
-        return "notes/edit";
+        return "notes/create";
     }
 
     @PostMapping("/add_notes")
     public String addNotesPost(@Valid @ModelAttribute Notes formNotes, Model model, BindingResult bindingResult,
             RedirectAttributes redirectAttributes, Authentication authentication) {
         if (bindingResult.hasErrors()) {
-            return "notes/edit";
+            return "notes/create";
         }
         String username = authentication.getName(); // Ottiengo l'username
         Optional<User> user = userRepository.findByEmail(username); // Recupero l'utente dal DB

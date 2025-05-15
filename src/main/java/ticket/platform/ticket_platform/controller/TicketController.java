@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
+import ticket.platform.ticket_platform.model.Notes;
 import ticket.platform.ticket_platform.model.Ticket;
 import ticket.platform.ticket_platform.model.User;
 import ticket.platform.ticket_platform.repository.CategoryRepository;
@@ -70,10 +71,11 @@ public class TicketController {
     }
 
     @GetMapping("/create")
-    public String createTicketGet(Model model) {
+    public String createTicketGet(Model model, Authentication authentication) {
+        Boolean active = true;
         model.addAttribute("newTicket", new Ticket());
         model.addAttribute("categoryList", categoryRepository.findAll());
-        model.addAttribute("userList", userRepository.findAll());
+        model.addAttribute("userList", userRepository.findByActive(active));
         return "ticket/create";
     }
 
@@ -101,6 +103,31 @@ public class TicketController {
             return "ticket/details";
         }
         return "error/errorPage";
+    }
+
+    @PostMapping("/changeStatus")
+    public String changeTicketStatus(@RequestParam Long ticketId,
+            @RequestParam String newStatus,
+            RedirectAttributes redirectAttributes) {
+        Ticket ticket = ticketRepository.findById(ticketId).get();
+        if (ticket != null) {
+            ticket.setStatus(newStatus); // Cambia SOLO lo status
+            ticketRepository.save(ticket); // Salva
+            redirectAttributes.addFlashAttribute("messageChangeStatus", "Il ticket numero: "
+                    + ticket.getId() + " " + ticket.getTitle().toLowerCase() + " è stato aggiornato a: " + newStatus.toLowerCase());
+        }
+        return "redirect:/ticket";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteTicket(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Ticket ticket = ticketRepository.findById(id).get();
+        for (Notes notes : ticket.getNotes()) {
+            notesRepository.delete(notes);
+        }
+        ticketRepository.deleteById(id);
+        redirectAttributes.addFlashAttribute("deleteMessage", "Il ticket è stato eliminato");
+        return "redirect:/ticket";
     }
 
 }

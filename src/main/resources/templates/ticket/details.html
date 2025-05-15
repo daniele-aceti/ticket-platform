@@ -1,61 +1,151 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <title th:text="*{title}">Dettaglio Ticket</title>
+    <div th:replace="~{fragments/header :: head}"></div>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <title th:text="*{title}">Dettaglio Ticket</title>
-  <div th:replace="~{fragments/header :: head}"></div>
-</head>
+  <body class="bg-light">
+    <div class="container py-5">
+      <div class="card p-4" th:object="${detailsTicket}">
+        <div class="card-body">
+          <h1
+            class="card-title display-6 text-primary fw-bold mb-3 text-center"
+            th:text="*{title}"
+          ></h1>
 
-<body class="bg-light">
-  <div class="container py-5">
-    <div class="card p-4" th:object="${detailsTicket}">
-      <div class="card-body">
-        <h1 class="card-title display-6 text-primary fw-bold mb-3 text-center" th:text="*{title}"></h1>
+          <span
+            class="badge bg-success"
+            th:if="*{status == 'Aperto'}"
+            th:text="*{status}"
+          ></span>
+          <span
+            class="badge bg-danger"
+            th:if="*{status == 'Chiuso'}"
+            th:text="*{status}"
+          ></span>
 
-        <span class="badge bg-success" th:if="*{status == 'Aperto'}" th:text="*{status}"></span>
-        <span class="badge bg-danger" th:if="*{status == 'Chiuso'}" th:text="*{status}"></span>
+          <hr class="my-4" />
 
-        <hr class="my-4">
+          <h5 class="text-muted">Descrizione</h5>
+          <p class="fs-5" th:text="*{ticketDescription}"></p>
 
-        <h5 class="text-muted">Descrizione</h5>
-        <p class="fs-5" th:text="*{ticketDescription}"></p>
+          <hr class="my-4" />
 
-        <hr class="my-4">
+          <h5 class="text-muted">Utente:</h5>
+          <p class="fs-5" th:text="*{user.name}"></p>
 
-        <h5 class="text-muted">Utente:</h5>
-        <p class="fs-5" th:text="*{user.name}"></p>
+          <h5 class="text-muted">Email:</h5>
+          <p class="fs-6 text-muted" th:text="*{user.email}"></p>
 
-        <h5 class="text-muted">Email:</h5>
-        <p class="fs-6 text-muted" th:text="*{user.email}"></p>
+          <h5 class="text-muted mt-4">Note:</h5>
 
-        <h5 class="text-muted mt-4">Note:</h5>
+          <div th:if="${notesList.isEmpty()}">
+            <p>Non ci sono note</p>
+          </div>
 
-        <div th:if="${notesList.isEmpty()}">
-          <p>Non ci sono note</p>
-        </div>
+          <div th:each="note : ${notesList}" th:unless="${notesList.isEmpty()}">
+            <div class="card mb-3">
+              <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">
+                  Nota n. <span th:text="${note.id}"></span>
+                </h6>
+                <p class="mb-1">
+                  <strong>Descrizione:</strong>
+                  <span th:text="${note.notesDescription}"></span>
+                </p>
+                <p class="mb-0">
+                  <strong>Autore:</strong>
+                  <span th:text="${note.user.name}"></span>
+                </p>
+                <form th:action="@{/ticket/changeStatus}" method="post">
+                  <!-- Hidden field con l'ID del ticket -->
+                  <input
+                    type="hidden"
+                    name="ticketId"
+                    th:value="${note.ticket.id}"
+                  />
 
-        <div th:each="note : ${notesList}" th:unless="${notesList.isEmpty()}">
-          <div class="card mb-3">
-            <div class="card-body">
-              <h6 class="card-subtitle mb-2 text-muted">Nota n. <span th:text="${note.id}"></span></h6>
-              <p class="mb-1"><strong>Descrizione:</strong> <span th:text="${note.notesDescription}"></span></p>
-              <p class="mb-0"><strong>Autore:</strong> <span th:text="${note.user.name}"></span></p>
+                  <div class="dropdown mt-3">
+                    <button
+                      class="btn btn-outline-success dropdown-toggle"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                    >
+                      Stato:
+                      <span th:text="${note.ticket.status}"></span>
+                    </button>
+                    <ul class="dropdown-menu ">
+                      <li>
+                        <form th:action="@{/ticket/changeStatus}" method="post">
+                          <input
+                            type="hidden"
+                            name="ticketId"
+                            th:value="${note.ticket.id}"
+                          />
+                          <input
+                            type="hidden"
+                            name="newStatus"
+                            value="Da Fare"
+                          />
+                          <button class="dropdown-item" type="submit">
+                            Da Fare
+                          </button>
+                        </form>
+                      </li>
+                      <li>
+                        <form th:action="@{/ticket/changeStatus}" method="post">
+                          <input
+                            type="hidden"
+                            name="ticketId"
+                            th:value="${note.ticket.id}"
+                          />
+                          <input
+                            type="hidden"
+                            name="newStatus"
+                            value="In Corso"
+                          />
+                          <button class="dropdown-item" type="submit">
+                            In Corso
+                          </button>
+                        </form>
+                      </li>
+                      <li>
+                        <form th:action="@{/ticket/changeStatus}" method="post">
+                          <input
+                            type="hidden"
+                            name="ticketId"
+                            th:value="${note.ticket.id}"
+                          />
+                          <input
+                            type="hidden"
+                            name="newStatus"
+                            value="Completato"
+                          />
+                          <button class="dropdown-item" type="submit">
+                            Completato
+                          </button>
+                        </form>
+                      </li>
+                    </ul>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="mt-4 text-center">
-          <a class="btn btn-outline-secondary" th:href="@{/ticket}">← Torna alla lista</a>
+          <div class="mt-4 text-center">
+            <a class="btn btn-outline-secondary" th:href="@{/ticket}"
+              >← Torna alla lista</a
+            >
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <footer class="mt-5">
-    <div th:replace="~{fragments/header :: bootstrapScript}"></div>
-  </footer>
-
-</body>
-
+    <footer class="mt-5">
+      <div th:replace="~{fragments/header :: bootstrapScript}"></div>
+    </footer>
+  </body>
 </html>

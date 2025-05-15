@@ -26,7 +26,7 @@ public class Ticket {
     private Long id;
 
     @NotBlank(message = "Inserisci un titolo corretto, il minimo dei caratteri è 5")
-    @Size(min = 5, max=20)
+    @Size(min = 5, max=40)
     private String title;
 
     @NotBlank(message = "Inserisci una descrizione corretta, il minimo dei caratteri è 10")

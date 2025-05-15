@@ -31,7 +31,7 @@ public class User {
     @Size(max = 20, min = 5, message = "Inserisci una password valida")
     private String password;
 
-    private boolean disponibile;
+    private boolean active;
 
     @OneToMany(mappedBy = "user")
     private List<Ticket> tickets;
@@ -71,13 +71,6 @@ public class User {
         this.password = password;
     }
 
-    public boolean isDisponibile() {
-        return disponibile;
-    }
-
-    public void setDisponibile(boolean disponibile) {
-        this.disponibile = disponibile;
-    }
 
     public List<Ticket> getTickets() {
         return tickets;
@@ -109,6 +102,14 @@ public class User {
 
     public void setRole(List<Role> role) {
         this.role = role;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
 }

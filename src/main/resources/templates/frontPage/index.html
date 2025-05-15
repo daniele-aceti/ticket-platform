@@ -20,18 +20,42 @@
 
   <!-- Contenuto principale -->
   <main class="container">
+    <!-- Nota Aggiunta -->
     <th:block th:if="${messageAddNote != null}">
       <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
         <span th:text="${messageAddNote}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     </th:block>
+    <!-- Ticket Aggiunto -->
     <th:block th:if="${messageAddTicket != null}">
       <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
         <span th:text="${messageAddTicket}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     </th:block>
+    <!-- Modifica user -->
+    <th:block th:if="${messageEditUser != null}">
+      <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+        <span th:text="${messageEditUser}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </th:block>
+    <!-- Cambio Stato -->
+    <th:block th:if="${ messageChangeStatus != null}">
+      <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+        <span th:text="${messageChangeStatus}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </th:block>
+    <!-- Elimina Ticket -->
+    <th:block th:if="${deleteMessage != null}">
+      <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+        <span th:text="${deleteMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </th:block>
+
     <div class="bg-white p-4 rounded shadow-sm">
 
       <!-- Lista vuota -->
@@ -52,26 +76,28 @@
               <th>Operatore</th>
               <th>Vedi Dettagli</th>
               <th>Aggiungi Nota</th>
+              <th>Modifica Ticket</th>
+              <th>Elimina</th>
             </tr>
           </thead>
           <tbody>
-            <tr th:each="ticket, iterStat : ${ticketList}">
+            <tr th:each="ticket : ${ticketList}">
               <td th:text="${ticket.id}"></td>
               <td th:text="${ticket.title}"></td>
 
               <!-- Badge per status -->
               <td>
                 <span th:text="${ticket.status}" class="badge bg-danger badge-status"
-                  th:if="${ticket.status == 'Da Fare'}" </span>
-                  <span th:text="${ticket.status}" class="badge bg-warning badge-status"
-                    th:if="${ticket.status == 'In Corso'}"></span>
-                  <span th:text="${ticket.status}" class="badge bg-success badge-status"
-                    th:if="${ticket.status == 'Completato'}"></span>
+                  th:if="${ticket.status == 'Da Fare'}"> </span>
+                <span th:text="${ticket.status}" class="badge bg-warning badge-status"
+                  th:if="${ticket.status == 'In Corso'}"></span>
+                <span th:text="${ticket.status}" class="badge bg-success badge-status"
+                  th:if="${ticket.status == 'Completato'}"></span>
               </td>
-                <td th:text="${ticket.user.name}"></td>
+              <td th:text="${ticket.user.name}"></td>
               <!-- Link dettagli -->
               <td>
-                <a th:href="@{|/ticket/details/${ticket.id}|}" class="btn btn-outline-primary btn-sm"
+                <a th:href="@{|/ticket/details/${ticket.id}|}" class="btn btn-outline-success btn-sm"
                   title="Dettagli Ticket">
                   <img style="width:20px" src="img/details.gif" alt="details"></img>
                 </a>
@@ -83,6 +109,22 @@
                   <img style="width:20px" src="img/add_notes.gif" alt="add_notes"></img>
                 </a>
               </td>
+              <td>
+                <a th:href="@{|/add_notes/${ticket.id}|}" class="btn btn-outline-success btn-sm"
+                  title="Modifica Ticket">
+                  <img style="width:20px" src="img/edit.gif" alt="modifica_ticket"></img>
+                </a>
+              </td>
+              <form method="post" th:action="@{|/ticket/delete/${ticket.id}|}">
+                <td>
+                  <form th:action="@{/ticket/delete/{id}(id=${ticket.id})}" method="post" style="display:inline">
+                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Elimina">
+                      <img style="width:20px" src="img/trash.gif" alt="delete" />
+                    </button>
+                  </form>
+                </td>
+              </form>
+
             </tr>
           </tbody>
         </table>
