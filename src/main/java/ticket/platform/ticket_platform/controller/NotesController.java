@@ -24,7 +24,6 @@ import ticket.platform.ticket_platform.repository.UserRepository;
 public class NotesController {
 
     private final UserRepository userRepository;
-
     private NotesRepository notesRepository;
     private TicketRepository ticketRepository;
 

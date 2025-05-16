@@ -14,17 +14,54 @@
             class="card-title display-6 text-primary fw-bold mb-3 text-center"
             th:text="*{title}"
           ></h1>
-
-          <span
-            class="badge bg-success"
-            th:if="*{status == 'Aperto'}"
-            th:text="*{status}"
-          ></span>
-          <span
-            class="badge bg-danger"
-            th:if="*{status == 'Chiuso'}"
-            th:text="*{status}"
-          ></span>
+          <!-- Form cambio stato del ticket -->
+          <div class="dropdown mt-4 text-center">
+            <form th:action="@{/ticket/changeStatus}" method="post">
+              <input type="hidden" name="ticketId" th:value="*{id}" />
+              <label for="newStatus" class="form-label fw-bold me-2">Stato:</label>
+              <div class="btn-group">
+                <button
+                  class="btn btn-outline-dark dropdown-toggle"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                >
+                  <span th:text="*{status}">Stato</span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li>
+                    <button
+                      class="dropdown-item"
+                      type="submit"
+                      name="newStatus"
+                      value="Da Fare"
+                    >
+                      Da Fare
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      class="dropdown-item"
+                      type="submit"
+                      name="newStatus"
+                      value="In Corso"
+                    >
+                      In Corso
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      class="dropdown-item"
+                      type="submit"
+                      name="newStatus"
+                      value="Completato"
+                    >
+                      Completato
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </form>
+          </div>
 
           <hr class="my-4" />
 
@@ -59,86 +96,12 @@
                   <strong>Autore:</strong>
                   <span th:text="${note.user.name}"></span>
                 </p>
-                <form th:action="@{/ticket/changeStatus}" method="post">
-                  <!-- Hidden field con l'ID del ticket -->
-                  <input
-                    type="hidden"
-                    name="ticketId"
-                    th:value="${note.ticket.id}"
-                  />
-
-                  <div class="dropdown mt-3">
-                    <button
-                      class="btn btn-outline-success dropdown-toggle"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                    >
-                      Stato:
-                      <span th:text="${note.ticket.status}"></span>
-                    </button>
-                    <ul class="dropdown-menu ">
-                      <li>
-                        <form th:action="@{/ticket/changeStatus}" method="post">
-                          <input
-                            type="hidden"
-                            name="ticketId"
-                            th:value="${note.ticket.id}"
-                          />
-                          <input
-                            type="hidden"
-                            name="newStatus"
-                            value="Da Fare"
-                          />
-                          <button class="dropdown-item" type="submit">
-                            Da Fare
-                          </button>
-                        </form>
-                      </li>
-                      <li>
-                        <form th:action="@{/ticket/changeStatus}" method="post">
-                          <input
-                            type="hidden"
-                            name="ticketId"
-                            th:value="${note.ticket.id}"
-                          />
-                          <input
-                            type="hidden"
-                            name="newStatus"
-                            value="In Corso"
-                          />
-                          <button class="dropdown-item" type="submit">
-                            In Corso
-                          </button>
-                        </form>
-                      </li>
-                      <li>
-                        <form th:action="@{/ticket/changeStatus}" method="post">
-                          <input
-                            type="hidden"
-                            name="ticketId"
-                            th:value="${note.ticket.id}"
-                          />
-                          <input
-                            type="hidden"
-                            name="newStatus"
-                            value="Completato"
-                          />
-                          <button class="dropdown-item" type="submit">
-                            Completato
-                          </button>
-                        </form>
-                      </li>
-                    </ul>
-                  </div>
-                </form>
               </div>
             </div>
           </div>
 
           <div class="mt-4 text-center">
-            <a class="btn btn-outline-secondary" th:href="@{/ticket}"
-              >← Torna alla lista</a
-            >
+            <a class="btn btn-outline-secondary" th:href="@{/ticket}">← Torna alla lista</a>
           </div>
         </div>
       </div>

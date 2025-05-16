@@ -29,10 +29,10 @@ import ticket.platform.ticket_platform.repository.UserRepository;
 @RequestMapping("/ticket")
 public class TicketController {
 
-    private NotesRepository notesRepository;
-    private TicketRepository ticketRepository;
-    private CategoryRepository categoryRepository;
-    private UserRepository userRepository;
+    private final NotesRepository notesRepository;
+    private final TicketRepository ticketRepository;
+    private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public TicketController(TicketRepository ticketRepository, CategoryRepository categoryRepository,
@@ -43,6 +43,7 @@ public class TicketController {
         this.notesRepository = notesRepository;
     }
 
+    /* tables frontpage */
     @GetMapping
     public String frontPage(Model model, @RequestParam(name = "keyword", required = false) String title,
             Authentication authentication) {
@@ -71,7 +72,7 @@ public class TicketController {
     }
 
     @GetMapping("/create")
-    public String createTicketGet(Model model, Authentication authentication) {
+    public String createTicketGet(Model model) {
         Boolean active = true;
         model.addAttribute("newTicket", new Ticket());
         model.addAttribute("categoryList", categoryRepository.findAll());
@@ -127,6 +128,31 @@ public class TicketController {
         }
         ticketRepository.deleteById(id);
         redirectAttributes.addFlashAttribute("deleteMessage", "Il ticket è stato eliminato");
+        return "redirect:/ticket";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editTicketGet(@PathVariable("id") Long id, Model model) {
+        Boolean active = true;
+        model.addAttribute("editTicket", ticketRepository.findById(id).get());
+        model.addAttribute("categoryList", categoryRepository.findAll());
+        model.addAttribute("userList", userRepository.findByActive(active));
+        return "ticket/edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editTicketPost(@Valid @ModelAttribute("editTicket") Ticket formEditTicket, Model model,
+            BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categroyList", categoryRepository.findAll());
+            redirectAttributes.addFlashAttribute("errorEdit", "Nessun valore è stato modificato");
+            return "ticket/edit";
+        }
+        redirectAttributes.addFlashAttribute("successEdit", "Il Ticket N. " + formEditTicket.getId()
+                + " è stato modificato");
+        ticketRepository.save(formEditTicket);
+
         return "redirect:/ticket";
     }
 

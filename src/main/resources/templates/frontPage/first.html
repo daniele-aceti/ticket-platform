@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <div th:replace="~{fragments/header :: head}"></div>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: url('/img/first_page.png') no-repeat center center fixed;
+        background-size: cover;
+      }
+    </style>
+  </head>
+
+  <body>
+    <footer>
+      <div th:replace="~{fragments/header :: bootstrapScript}"></div>
+    </footer>
+
+    <script>
+  document.body.addEventListener("click", function () {
+        window.location.href = "http://localhost:8080/ticket";
+      });
+    </script>
+  </body>
+</html>

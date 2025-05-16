@@ -22,8 +22,8 @@ import ticket.platform.ticket_platform.repository.UserRepository;
 @RequestMapping("/operatore")
 public class OperatoreController {
 
-    TicketRepository ticketRepository;
-    UserRepository userRepository;
+    private final TicketRepository ticketRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public OperatoreController(UserRepository userRepository, TicketRepository ticketRepository) {
@@ -44,7 +44,7 @@ public class OperatoreController {
     }
 
    @PostMapping("/edit/{id}")
-public String postMethodName(@Valid @PathVariable Long id, @ModelAttribute User newDataUser, Model model,
+public String editOperatorePost(@Valid @PathVariable Long id, @ModelAttribute User newDataUser, Model model,
         RedirectAttributes redirectAttributes, BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
         redirectAttributes.addFlashAttribute("ErrorUser", "I dati non sono stati aggiornati");

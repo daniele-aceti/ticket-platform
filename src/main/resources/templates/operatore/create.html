@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <div th:replace="~{fragments/header :: head}"></div>
+  </head>
+  <body>
+    <header>
+      <div class="text-center text-primary mt-4">
+        <h1>TICKET</h1>
+        <h3>BENVENUTO</h3>
+      </div>
+    </header>
+
+    <main class="my-5">
+      <div class="container">
+        <div class="card shadow-lg">
+          <div class="card-header bg-dark text-white">
+            <h4 class="mb-0 text-center">Crea un nuovo operatore</h4>
+            <th:block th:if="${errorUserForm != null}">
+              <div
+                class="alert alert-danger alert-dismissible fade show text-center"
+                role="alert"
+              >
+                <span th:text="${errorUserForm}"></span>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="alert"
+                  aria-label="Close"
+                ></button>
+              </div>
+            </th:block>
+          </div>
+          <div class="card-body">
+            <form
+              id="ticket-form"
+              th:object="${newUser}"
+              th:action="@{/user/create}"
+              method="post"
+            >
+              <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  th:field="*{name}"
+                  th:errorClass="is-invalid"
+                />
+                <div
+                  class="invalid-feedback"
+                  th:if="${#fields.hasErrors('name')}"
+                  th:each="err : ${#fields.errors('name')}"
+                  th:text="${err}"
+                ></div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  th:field="*{email}"
+                  th:errorClass="is-invalid"
+                />
+                <div
+                  class="invalid-feedback"
+                  th:if="${#fields.hasErrors('email')}"
+                  th:each="err : ${#fields.errors('email')}"
+                  th:text="${err}"
+                ></div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  th:field="*{password}"
+                  th:errorClass="is-invalid"
+                />
+                <div
+                  class="invalid-feedback"
+                  th:if="${#fields.hasErrors('password')}"
+                  th:each="err : ${#fields.errors('password')}"
+                  th:text="${err}"
+                ></div>
+              </div>
+
+              <div
+                onclick="return confirm('Confermi di voler creare un nuovo operatore?')"
+                class="d-flex justify-content-center mt-4"
+              >
+                <button class="btn btn-success btn-lg" type="submit">
+                  Crea Operatore
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="mt-4 text-center">
+          <a class="btn btn-outline-secondary" th:href="@{/ticket}"
+            >← Torna alla lista</a
+          >
+        </div>
+      </div>
+    </main>
+    <footer class="mt-5">
+      <div th:replace="~{fragments/header :: bootstrapScript}"></div>
+    </footer>
+  </body>
+</html>
