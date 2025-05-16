@@ -2,6 +2,8 @@ package ticket.platform.ticket_platform.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +22,7 @@ public class Role {
     private String roleName;
 
     @ManyToMany(mappedBy = "role")
+    @JsonBackReference
     private List<User> user;
 
     public Long getId() {

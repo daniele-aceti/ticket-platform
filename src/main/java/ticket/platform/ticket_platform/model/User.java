@@ -2,6 +2,8 @@ package ticket.platform.ticket_platform.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -34,9 +36,11 @@ public class User {
     private boolean active;
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private List<Ticket> tickets;
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private List<Notes> notes;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -45,6 +49,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @JsonBackReference
     private List<Role> role;
 
     public Long getId() {
