@@ -23,11 +23,11 @@ public class Notes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "La descrizione non può essere vuota")
-    @Size(min = 10, message = "Inserisci una descrizione corretta, il minimo dei caratteri è 10")
+    @NotBlank
+    @Size(min = 30, message = "Inserisci una descrizione corretta, il minimo dei caratteri è 30")
     private String notesDescription;
 
-    @NotNull(message = "Seleziona almeno una delle due opzioni")
+    @NotNull(message = "Seleziona una data")
     @DateTimeFormat(pattern = "yyy-MM-dd")
     private LocalDate notesCreationDate;
 

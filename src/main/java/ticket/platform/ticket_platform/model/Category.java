@@ -19,7 +19,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "La categoria non è corretta, il massimo di caratteri consentiti è 20")
+    @NotBlank(message = "La categoria non è corretta, il massimo di caratteri consentiti è 30")
     @Size(max = 30)
     private String categoryName;
 

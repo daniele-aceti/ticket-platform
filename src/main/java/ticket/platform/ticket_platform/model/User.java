@@ -30,7 +30,7 @@ public class User {
     private String email;
 
     @NotBlank
-    @Size(max = 20, min = 5, message = "Inserisci una password valida")
+    @Size(max = 40, min = 5, message = "Inserisci una password valida")
     private String password;
 
     private boolean active;

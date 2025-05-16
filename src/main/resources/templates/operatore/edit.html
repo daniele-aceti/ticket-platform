@@ -31,27 +31,19 @@
           </div>
           <div class="card-body">
             <!-- Matricola-->
-             <label>Matricola n. </label>
+            <label>Matricola n. </label>
             <span th:text="*{id}"></span>
 
             <!-- Nome -->
             <div class="mb-3 mt-3">
               <label for="name" class="form-label">Nome</label>
-              <input
-                type="text"
-                th:field="*{name}"
-                class="form-control"
-              />
+              <input type="text" th:field="*{name}" class="form-control" />
             </div>
 
             <!-- Email -->
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
-              <input
-                type="email"
-                th:field="*{email}"
-                class="form-control"
-              />
+              <input type="email" th:field="*{email}" class="form-control" />
             </div>
 
             <!-- Password -->
@@ -77,28 +69,43 @@
                 >Utente Attivo</label
               >
             </div>
-            <!-- Ticket -->
+            <!-- Ticket con note associate -->
             <div class="mb-3">
               <label class="form-label">Ticket:</label>
+
+              <div th:if="${operatore.tickets.isEmpty()}">
+                <p class="mt-2 text-decoration-underline">
+                  Nessun ticket disponibile
+                </p>
+              </div>
               <ul class="list-group" th:each="ticket : ${operatore.tickets}">
                 <li class="list-group-item">
-                  <strong>ID:</strong> <span th:text="${ticket.id}"></span> -
+                  <strong>ID:</strong> <span th:text="${ticket.id}"></span>
                   <strong>Titolo:</strong>
-                  <span th:text="${ticket.title}"></span> -
+                  <span th:text="${ticket.title}"></span>
                   <strong>Stato:</strong>
                   <span th:text="${ticket.status}"></span>
-                </li>
-              </ul>
-            </div>
-
-            <!-- Note -->
-            <div class="mb-3">
-              <label class="form-label">Note:</label>
-              <ul class="list-group">
-                <li class="list-group-item" th:each="note : ${operatore.notes}">
-                  <strong>ID:</strong> <span th:text="${note.id}"></span> -
-                  <strong>Contenuto:</strong>
-                  <span th:text="${note. notesDescription}"></span>
+                  <!-- Note associate al ticket -->
+                  <ul
+                    class="mt-2 ps-3 list-group list-group-flush"
+                    th:if="${!#lists.isEmpty(ticket.notes)}"
+                  >
+                    <li
+                      class="list-group-item ps-0"
+                      th:each="note : ${ticket.notes}"
+                    >
+                      <strong>Nota ID:</strong>
+                      <span th:text="${note.id}"></span> -
+                      <strong>Contenuto:</strong>
+                      <span th:text="${note.notesDescription}"></span>
+                    </li>
+                  </ul>
+                  <div
+                    th:if="${ticket.notes.isEmpty()}"
+                    class="mt-2 text-muted ps-3"
+                  >
+                    Nessuna nota associata.
+                  </div>
                 </li>
               </ul>
             </div>

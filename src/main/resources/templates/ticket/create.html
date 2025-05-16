@@ -80,6 +80,11 @@
                   th:text="${err}"
                 ></div>
               </div>
+              <div th:if="${categoryList.isEmpty()}">
+                <p class="mt-2 text-decoration-underline">
+                  Nessuna Categoria Disponibile
+                </p>
+              </div>
 
               <div class="mb-3">
                 <label class="form-label">Data creazione</label>
@@ -114,6 +119,11 @@
                       th:text="${user.name}"
                     ></label>
                   </div>
+                </div>
+                <div th:if="${userList.isEmpty()}">
+                  <p class="mt-2 text-decoration-underline">
+                    Nessun Operatore On-Line
+                  </p>
                 </div>
                 <div
                   class="text-danger mt-1"

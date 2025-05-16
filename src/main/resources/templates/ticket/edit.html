@@ -72,6 +72,9 @@
                       th:text="${categoria.categoryName}"
                     ></label>
                   </div>
+                  <div th:if="${categoryList.isEmpty()}">
+                    <p class="mt-2 text-decoration-underline">Nessuna Categoria Disponibile</p>
+                  </div>
                 </div>
                 <div
                   class="text-danger mt-1"
@@ -114,6 +117,9 @@
                       th:text="${user.name}"
                     ></label>
                   </div>
+                </div>
+                <div th:if="${userList.isEmpty()}">
+                  <p class="mt-2 text-decoration-underline">Nessun operatore On-Line</p>
                 </div>
                 <div
                   class="text-danger mt-1"
