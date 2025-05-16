@@ -16,14 +16,13 @@ public class SecurityConfiguration {
 
         http.authorizeHttpRequests()
                 .requestMatchers("/ticket/create", "/ticket/delete/**", "/ticket/edit/**", "user/create",
-                "category/create", "category/delete/**")
+                        "category/create", "category/delete/**")
                 .hasAnyAuthority("ADMIN")
-                .requestMatchers("/ticket").permitAll()
-                .requestMatchers("/**").permitAll()
+                .requestMatchers("/ticket", "/login").permitAll()
+                .requestMatchers("/").authenticated()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
-               // .defaultSuccessUrl("/ticket", true)  /* dopo il login */
-                .and().formLogin()
                 .and().logout()
                 .and().exceptionHandling()
                 .and().csrf().disable();

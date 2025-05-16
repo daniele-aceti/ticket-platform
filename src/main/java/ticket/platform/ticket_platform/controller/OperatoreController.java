@@ -1,5 +1,7 @@
 package ticket.platform.ticket_platform.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -43,60 +45,79 @@ public class OperatoreController {
         return "operatore/edit";
     }
 
-   @PostMapping("/edit/{id}")
-public String editOperatorePost(@Valid @PathVariable Long id, @ModelAttribute User newDataUser, Model model,
-        RedirectAttributes redirectAttributes, BindingResult bindingResult) {
-    if (bindingResult.hasErrors()) {
-        redirectAttributes.addFlashAttribute("ErrorUser", "I dati non sono stati aggiornati");
-        return "operatore/edit";
-    }
+    @PostMapping("/edit/{id}")
+    public String editOperatorePost(@Valid @PathVariable Long id, @ModelAttribute User newDataUser, Model model,
+            RedirectAttributes redirectAttributes, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("ErrorUser", "I dati non sono stati aggiornati");
+            return "operatore/edit";
+        }
 
-    User user = userRepository.findById(id).get();
-    if (user == null) {
-        redirectAttributes.addFlashAttribute("ErrorUser", "Utente non trovato");
-        return "redirect:/operatore/edit/" + id;
-    }
+        User user = userRepository.findById(id).get();
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("ErrorUser", "Utente non trovato");
+            return "redirect:/operatore/edit/" + id;
+        }
 
-    boolean changed = false;
+        boolean changed = false;
 
-    // Confronta nome
-    if (!user.getName().equals(newDataUser.getName())) {
-        user.setName(newDataUser.getName());
-        changed = true;
-    }
-
-    // Confronta email
-    if (!user.getEmail().equals(newDataUser.getEmail())) {
-        user.setEmail(newDataUser.getEmail());
-        changed = true;
-    }
-
-    // Controlla ticket status e active
-    Ticket ticketUser = ticketRepository.findById(id).orElse(null);
-    if (ticketUser != null && ticketUser.getStatus().equals("Completato")) {
-        if (user.isActive() != newDataUser.isActive()) {
-            user.setActive(newDataUser.isActive());
+        // Confronta nome
+        if (!user.getName().equals(newDataUser.getName())) {
+            user.setName(newDataUser.getName());
             changed = true;
         }
-    } else {
-        redirectAttributes.addFlashAttribute("ErrorActive", "Non puoi scollegarti ci sono ancora dei ticket da chiudere");
-        return "redirect:/operatore/edit/" + id;
+
+        // Confronta email
+        if (!user.getEmail().equals(newDataUser.getEmail())) {
+            user.setEmail(newDataUser.getEmail());
+            changed = true;
+        }
+
+        
+        // Controlla ticket status e active
+        List<Ticket> userTickets = ticketRepository.findByUserId(user.getId());
+        //se la lista è vuota conseti attivazione/disattivazione
+        if (userTickets.isEmpty()) {
+            if (user.isActive() != newDataUser.isActive()) {
+                user.setActive(newDataUser.isActive());
+                changed = true;
+            }
+        } else {
+            boolean allCompleted = true;
+
+            //se è piena ma anche un solo ticket non è completato blocca!
+            for (Ticket ticket : userTickets) {
+                if (!ticket.getStatus().equalsIgnoreCase("Completato")) {
+                    allCompleted = false;
+                    break;
+                }
+            }
+
+            //se tutti sono completati consenti la disattivazione
+            if (allCompleted) {
+                if (user.isActive() != newDataUser.isActive()) {
+                    user.setActive(newDataUser.isActive());
+                    changed = true;
+                }
+            } else {
+                redirectAttributes.addFlashAttribute("ErrorActive", "Non puoi scollegarti: ci sono ancora ticket da chiudere.");
+                return "redirect:/operatore/edit/" + id;
+            }
+        }
+
+        // Password (solo se modificata e non vuota)
+        if (newDataUser.getPassword() != null && !newDataUser.getPassword().isBlank()) {
+            //imposta password criptata
+            user.setPassword("{noop}" + newDataUser.getPassword());
+            changed = true;
+        }
+
+        if (changed) {
+            userRepository.save(user);
+            redirectAttributes.addFlashAttribute("messageEditUser", "I tuoi dati sono stati aggiornati");
+        }
+
+        return "redirect:/ticket";
     }
-
-    // Password (solo se modificata e non vuota)
-    if (newDataUser.getPassword() != null && !newDataUser.getPassword().isBlank()) {
-        //imposta password criptata
-        user.setPassword("{noop}" + newDataUser.getPassword());
-        changed = true;
-    }
-
-    if (changed) {
-        userRepository.save(user);
-        redirectAttributes.addFlashAttribute("messageEditUser", "I tuoi dati sono stati aggiornati");
-    }
-
-    return "redirect:/ticket";
-}
-
 
 }
