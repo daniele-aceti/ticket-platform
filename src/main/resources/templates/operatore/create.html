@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
-    <div th:replace="~{fragments/header :: head}"></div>
+    <title>Crea Operatore</title>
+    <th:block th:replace="~{fragments/header :: head}"></th:block>
   </head>
   <body>
     <header>
@@ -16,20 +17,6 @@
         <div class="card shadow-lg">
           <div class="card-header bg-dark text-white">
             <h4 class="mb-0 text-center">Crea un nuovo operatore</h4>
-            <th:block th:if="${errorUserForm != null}">
-              <div
-                class="alert alert-danger alert-dismissible fade show text-center"
-                role="alert"
-              >
-                <span th:text="${errorUserForm}"></span>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="alert"
-                  aria-label="Close"
-                ></button>
-              </div>
-            </th:block>
           </div>
           <div class="card-body">
             <form
@@ -57,7 +44,7 @@
               <div class="mb-3">
                 <label class="form-label">Email</label>
                 <input
-                  type="text"
+                  type="email"
                   class="form-control"
                   th:field="*{email}"
                   th:errorClass="is-invalid"

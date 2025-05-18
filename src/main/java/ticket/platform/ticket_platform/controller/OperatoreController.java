@@ -46,8 +46,8 @@ public class OperatoreController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editOperatorePost(@Valid @PathVariable Long id, @ModelAttribute User newDataUser, Model model,
-            RedirectAttributes redirectAttributes, BindingResult bindingResult) {
+    public String editOperatorePost(@Valid @PathVariable Long id, @ModelAttribute User newDataUser,
+            BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("ErrorUser", "I dati non sono stati aggiornati");
             return "operatore/edit";
@@ -73,7 +73,6 @@ public class OperatoreController {
             changed = true;
         }
 
-        
         // Controlla ticket status e active
         List<Ticket> userTickets = ticketRepository.findByUserId(user.getId());
         //se la lista è vuota conseti attivazione/disattivazione

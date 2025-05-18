@@ -45,7 +45,7 @@ public class NotesController {
     }
 
     @PostMapping("/add_notes")
-    public String addNotesPost(@Valid @ModelAttribute Notes formNotes, Model model, BindingResult bindingResult,
+    public String addNotesPost(@Valid @ModelAttribute Notes formNotes, BindingResult bindingResult, Model model,
             RedirectAttributes redirectAttributes, Authentication authentication) {
         if (bindingResult.hasErrors()) {
             return "notes/create";

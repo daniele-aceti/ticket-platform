@@ -24,7 +24,7 @@ public class Notes {
     private Long id;
 
     @NotBlank
-    @Size(min = 30, message = "Inserisci una descrizione corretta, il minimo dei caratteri è 30")
+    @Size(min = 10, message = "Inserisci una descrizione corretta, il minimo dei caratteri è 10")
     private String notesDescription;
 
     @NotNull(message = "Seleziona una data")

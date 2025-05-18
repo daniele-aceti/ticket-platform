@@ -40,11 +40,15 @@ public class CategoryController {
     }
 
     @PostMapping("/create")
-    public String createCategoryPost(@Valid @ModelAttribute Category formnewCategory, Model model,
-            BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String createCategoryPost(@Valid @ModelAttribute("newCategory") Category formnewCategory,
+            BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+
         List<Category> oldCategoryList = categoryRepository.findAll();
+
         if (bindingResult.hasErrors()) {
-            return "redirect:/category/create";
+            model.addAttribute("categoryList", oldCategoryList);
+            model.addAttribute("newCategory", formnewCategory);
+            return "category/create";
         }
         //cerca categoria gia esistente
         boolean categoryExists = false;

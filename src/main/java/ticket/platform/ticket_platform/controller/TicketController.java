@@ -84,8 +84,9 @@ public class TicketController {
     public String createTicketPost(@Valid @ModelAttribute("newTicket") Ticket formNewTicket,
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
+            Boolean active = true;
             model.addAttribute("categoryList", categoryRepository.findAll());
-            model.addAttribute("userList", userRepository.findAll());
+            model.addAttribute("userList", userRepository.findByActive(active));
             return "ticket/create";
         }
         ticketRepository.save(formNewTicket);

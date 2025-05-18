@@ -40,12 +40,11 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String userCreatePost(@Valid @ModelAttribute User formNewUser, Model model,
-            BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String userCreatePost(@Valid @ModelAttribute("newUser") User formNewUser, 
+            BindingResult bindingResult,Model model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("errorUserForm",
-                    "L'operatore non è stato aggiunto");
-            return "user/create";
+             model.addAttribute("newUser", formNewUser);
+            return "operatore/create";
         }
         Role operatore = roleRepository.findByRoleName("OPERATORE");
         formNewUser.setRole(List.of(operatore));//mi da una nuova lista con solo un elemento OPERATORE

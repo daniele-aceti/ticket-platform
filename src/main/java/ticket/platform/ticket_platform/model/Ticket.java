@@ -40,6 +40,7 @@ public class Ticket {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate ticketCreationDate;
 
+    @NotNull(message = "Seleziona un utente on-line")
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

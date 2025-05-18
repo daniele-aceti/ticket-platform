@@ -19,8 +19,8 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "La categoria non è corretta, il massimo di caratteri consentiti è 30")
-    @Size(max = 30)
+    @NotBlank(message = "La categoria non è corretta, il massimo di caratteri consentiti è 30, il minimo è 5")
+    @Size(min = 5, max = 30)
     private String categoryName;
 
     @ManyToMany(mappedBy = "categories")

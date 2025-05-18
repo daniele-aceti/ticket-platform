@@ -23,13 +23,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "I valori inseriti non sono corretti")
+    @NotBlank(message = "Non lasciare lo spazio in bianco o con spazi")
+    @Size(max = 40, min = 5, message = "Inserisci un nome valido")
     private String name;
 
-    @NotBlank(message = "Inserisci una email valida")
+    @NotBlank(message = "Non lasciare lo spazio in bianco o con spazi")
+    @Size(max = 40, min = 5, message = "Inserisci una email valida")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Non lasciare lo spazio in bianco o con spazi")
     @Size(max = 40, min = 5, message = "Inserisci una password valida")
     private String password;
 
@@ -75,7 +77,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
     public List<Ticket> getTickets() {
         return tickets;

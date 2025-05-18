@@ -1,93 +1,144 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Crea Categoria</title>
     <div th:replace="~{fragments/header :: head}"></div>
-</head>
+  </head>
 
-<body>
+  <body>
     <header>
-        <div class="text-center text-primary mt-4">
-            <h1>TICKET</h1>
-            <h3>BENVENUTO</h3>
+      <div class="text-center text-primary mt-4">
+        <h1>TICKET</h1>
+        <h3>BENVENUTO</h3>
+      </div>
+      <th:block th:if="${addCategory != null}">
+        <div
+          class="alert alert-success alert-dismissible fade show text-center"
+          role="alert"
+        >
+          <span th:text="${addCategory}"></span>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
         </div>
-        <th:block th:if="${addCategory != null}">
-            <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-                <span th:text="${addCategory}"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </th:block>
-           <th:block th:if="${deleteCategory != null}">
-            <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                <span th:text="${deleteCategory}"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </th:block>
-               </th:block>
-           <th:block th:if="${categoryError != null}">
-            <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                <span th:text="${categoryError}"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </th:block>
-             </th:block>
+      </th:block>
+      <th:block th:if="${deleteCategory != null}">
+        <div
+          class="alert alert-danger alert-dismissible fade show text-center"
+          role="alert"
+        >
+          <span th:text="${deleteCategory}"></span>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+      </th:block>
+      <th:block th:if="${categoryError != null}">
+        <div
+          class="alert alert-danger alert-dismissible fade show text-center"
+          role="alert"
+        >
+          <span th:text="${categoryError}"></span>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+      </th:block>
     </header>
     <main class="my-5">
-        <div class="container">
-            <div class="card shadow-lg">
-                <div class="card-header bg-dark text-white">
-                    <h4 class="mb-0 text-center">Crea una nuova categoria</h4>
+      <div class="container">
+        <div class="card shadow-lg">
+          <div class="card-header bg-dark text-white">
+            <h4 class="mb-0 text-center">Crea una nuova categoria</h4>
+          </div>
+          <div class="card-body">
+            <!-- Form per creare categoria -->
+            <form
+              id="ticket-form"
+              th:object="${newCategory}"
+              th:action="@{/category/create}"
+              method="post"
+            >
+              <div class="mb-3">
+                <label class="form-label">Nome Categoria</label>
+                <div class="input-group">
+                  <input
+                    placeholder="Inserisci una categoria"
+                    type="text"
+                    class="form-control"
+                    th:field="*{categoryName}"
+                    th:errorClass="is-invalid"
+                  />
+                  <button class="btn btn-outline-secondary" type="submit">
+                    <img
+                      style="width: 30px"
+                      src="/img/add.gif"
+                      alt="Add Category"
+                    />
+                  </button>
                 </div>
-                <div class="card-body">
-                    <!-- Form per creare categoria -->
-                    <form id="ticket-form" th:object="${newCategory}" th:action="@{/category/create}" method="post">
-                        <div class="mb-3">
-                            <label class="form-label">Nome Categoria</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" th:field="*{categoryName}" th:errorClass="is-invalid" />
-                                <button class="btn btn-outline-secondary" type="submit">
-                                    <img style="width: 30px" src="/img/add.gif" alt="Add Category">
-                                </button>
-                            </div>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('categoryName')}"
-                                 th:each="err : ${#fields.errors('categoryName')}" th:text="${err}"></div>
-                        </div>
-                    </form>
+                <div
+                  class="invalid-feedback"
+                  th:if="${#fields.hasErrors('categoryName')}"
+                  th:each="err : ${#fields.errors('categoryName')}"
+                  th:text="${err}"
+                ></div>
+              </div>
+            </form>
+            <!-- Lista categorie esistenti -->
+            <ul class="list-group" th:if="${categoryList.size() > 0}">
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+                th:each="oldCategory : ${categoryList}"
+              >
+                <span th:text="${oldCategory.categoryName}"></span>
+                <form
+                  th:action="@{|/category/delete/${oldCategory.id}|}"
+                  method="post"
+                >
+                  <button
+                    class="btn btn-white"
+                    type="submit"
+                    onclick="return confirm('Sei sicuro di voler eliminare questa categoria?')"
+                  >
+                    <img style="width: 20px" src="/img/trash.gif" alt="trash" />
+                  </button>
+                </form>
+              </li>
+            </ul>
 
-                    <!-- Lista categorie esistenti -->
-                    <ul class="list-group" th:if="${categoryList.size() > 0}">
-                        <li class="list-group-item d-flex justify-content-between align-items-center"
-                            th:each="oldCategory : ${categoryList}">
-                            <span th:text="${oldCategory.categoryName}"></span>
-                            <form th:action="@{|/category/delete/${oldCategory.id}|}" method="post">
-                                <button class="btn btn-white" type="submit"
-                                        onclick="return confirm('Sei sicuro di voler eliminare questa categoria?')">
-                                    <img style="width: 20px" src="/img/trash.gif" alt="trash">
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-
-                    <!-- Messaggio se non ci sono categorie -->
-                    <div class="alert alert-primary text-center mt-3" role="alert"
-                         th:unless="${categoryList.size() > 0}">
-                        Non ci sono categorie salvate
-                    </div>
-                </div>
+            <!-- Messaggio se non ci sono categorie -->
+            <div
+              class="alert alert-primary text-center mt-3"
+              role="alert"
+              th:unless="${categoryList.size() > 0}"
+            >
+              Non ci sono categorie salvate
             </div>
-
-            <div class="mt-4 text-center">
-                <a class="btn btn-outline-secondary" th:href="@{/ticket}">← Torna alla lista</a>
-            </div>
+          </div>
         </div>
+
+        <div class="mt-4 text-center">
+          <a class="btn btn-outline-secondary" th:href="@{/ticket}"
+            >← Torna alla lista</a
+          >
+        </div>
+      </div>
     </main>
 
     <!-- Script Bootstrap -->
     <footer class="mt-5">
-        <div th:replace="~{fragments/header :: bootstrapScript}"></div>
+      <div th:replace="~{fragments/header :: bootstrapScript}"></div>
     </footer>
-</body>
-
+  </body>
 </html>
