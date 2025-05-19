@@ -1,7 +1,5 @@
 package ticket.platform.ticket_platform.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,26 +13,22 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
 import ticket.platform.ticket_platform.model.Category;
-import ticket.platform.ticket_platform.model.Ticket;
-import ticket.platform.ticket_platform.repository.CategoryRepository;
-import ticket.platform.ticket_platform.repository.TicketRepository;
+import ticket.platform.ticket_platform.service.CategoryService;
 
 @Controller
 @RequestMapping("/category")
 public class CategoryController {
 
-    CategoryRepository categoryRepository;
-    TicketRepository ticketRepository;
+    private final CategoryService categoryService;
 
     @Autowired
-    public CategoryController(CategoryRepository categoryRepository, TicketRepository ticketRepository) {
-        this.categoryRepository = categoryRepository;
-        this.ticketRepository = ticketRepository;
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/create")
     public String createCategoryGet(Model model) {
-        model.addAttribute("categoryList", categoryRepository.findAll());
+        model.addAttribute("categoryList", categoryService.findAllCategories());
         model.addAttribute("newCategory", new Category());
         return "category/create";
     }
@@ -42,44 +36,14 @@ public class CategoryController {
     @PostMapping("/create")
     public String createCategoryPost(@Valid @ModelAttribute("newCategory") Category formnewCategory,
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
-
-        List<Category> oldCategoryList = categoryRepository.findAll();
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("categoryList", oldCategoryList);
-            model.addAttribute("newCategory", formnewCategory);
-            return "category/create";
-        }
-        //cerca categoria gia esistente
-        boolean categoryExists = false;
-
-        for (Category oldCategory : oldCategoryList) {
-            if (oldCategory.getCategoryName().equalsIgnoreCase(formnewCategory.getCategoryName())) {
-                categoryExists = true;
-                break;
-            }
-        }
-
-        if (categoryExists) {
-            redirectAttributes.addFlashAttribute("categoryError",
-                    "Stai tentando di inserire due volte la stessa categoria");
-        } else {
-            categoryRepository.save(formnewCategory);
-            redirectAttributes.addFlashAttribute("addCategory",
-                    "La nuova categoria: " + formnewCategory.getCategoryName() + " è stata aggiunta");
-        }
-
+        categoryService.newCategoryAndCheck(formnewCategory, redirectAttributes, bindingResult, model);
         return "redirect:/category/create";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteCategory(@PathVariable Long id, Model model,
             RedirectAttributes redirectAttributes) {
-        Category category = categoryRepository.findById(id).get();
-        for (Ticket ticket : category.getTickets()) {
-            ticket.getCategories().remove(category);
-        }
-        categoryRepository.deleteById(id);
+        categoryService.deleteCategory(id);
         redirectAttributes.addFlashAttribute("deleteCategory", "La categoria è stata rimossa");
         return "redirect:/category/create";
     }

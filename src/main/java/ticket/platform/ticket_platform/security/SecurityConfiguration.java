@@ -15,15 +15,14 @@ public class SecurityConfiguration {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests()
-                .requestMatchers("/api/**").permitAll()
+                .requestMatchers("/**").permitAll()
                 .requestMatchers("/ticket/create", "/ticket/delete/**", "/ticket/edit/**", "user/create",
                         "category/create", "category/delete/**")
                 .hasAnyAuthority("ADMIN")
                 .requestMatchers("/ticket", "/login").permitAll()
                 .requestMatchers("/").authenticated()
                 .anyRequest().authenticated()
-                .and()
-                .formLogin()
+                .and().formLogin()
                 .and().logout()
                 .and().exceptionHandling()
                 .and().csrf().disable();
