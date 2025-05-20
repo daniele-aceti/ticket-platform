@@ -5,13 +5,13 @@
     <title>Crea Categoria</title>
     <div th:replace="~{fragments/header :: head}"></div>
   </head>
-
   <body>
     <header>
       <div class="text-center text-primary mt-4">
         <h1>TICKET</h1>
         <h3>BENVENUTO</h3>
       </div>
+      <!-- Messaggio categoria aggiunta -->
       <th:block th:if="${addCategory != null}">
         <div
           class="alert alert-success alert-dismissible fade show text-center"
@@ -24,6 +24,7 @@
             data-bs-dismiss="alert"
             aria-label="Close"
           ></button>
+          <!-- Messaggio categoria cancellata -->
         </div>
       </th:block>
       <th:block th:if="${deleteCategory != null}">
@@ -40,6 +41,7 @@
           ></button>
         </div>
       </th:block>
+      <!-- Messaggio errore -->
       <th:block th:if="${categoryError != null}">
         <div
           class="alert alert-danger alert-dismissible fade show text-center"

@@ -77,13 +77,12 @@ public class TicketService {
     }
 
     public List<Ticket> findCategory(String value) {
-        return  ticketRepository.findByCategoriesCategoryNameContainingIgnoreCase(value);
+        return ticketRepository.findByCategoriesCategoryNameContainingIgnoreCase(value);
     }
 
-        public List<Ticket> findTitle(String value) {
+    public List<Ticket> findTitle(String value) {
         return ticketRepository.findByTitleContainingIgnoreCase(value);
     }
-
 
     public void deleteTicket(Long id) {
         Ticket ticket = ticketRepository.findById(id).get();
@@ -95,13 +94,11 @@ public class TicketService {
 
     public void changeStatusTicket(String newStatus, Long ticketId, RedirectAttributes redirectAttributes) {
         Ticket ticket = findByIdTicket(ticketId).get();
-        if (ticket != null) {
-            ticket.setStatus(newStatus); // Cambia SOLO lo status
-            create(ticket);// Salva
-            redirectAttributes.addFlashAttribute("messageChangeStatus", "Il ticket numero: "
-                    + ticket.getId() + " " + ticket.getTitle().toLowerCase() + " è stato aggiornato a: "
-                    + newStatus.toLowerCase());
-        }
+        ticket.setStatus(newStatus);
+        create(ticket);
+        redirectAttributes.addFlashAttribute("messageChangeStatus", "Il ticket numero: "
+                + ticket.getId() + " " + ticket.getTitle().toLowerCase() + " è stato aggiornato a: "
+                + newStatus.toLowerCase());
     }
 
     public boolean ticketDetails(Long id, Model model) {

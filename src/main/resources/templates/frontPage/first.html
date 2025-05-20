@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
+    <title>Benveuto <th:block th:text="${#authentication.principal.name}"></th:block></title>
     <div th:replace="~{fragments/header :: head}"></div>
     <style>
       html, body {

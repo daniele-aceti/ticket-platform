@@ -72,7 +72,7 @@ public class OperatoreService {
                     changed = true;
                 }
             } else {
-                redirectAttribute.addFlashAttribute("ErrorActive",
+                redirectAttribute.addFlashAttribute("errorActive",
                         "Non puoi scollegarti: ci sono ancora ticket da chiudere.");
                 flag = true;
 

@@ -15,13 +15,12 @@ public class SecurityConfiguration {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests()
-                .requestMatchers("/**").permitAll()
-                .requestMatchers("/ticket/create", "/ticket/delete/**", "/ticket/edit/**", "user/create",
-                        "category/create", "category/delete/**")
+                .requestMatchers("/ticket/create", "/ticket/delete/**", "/ticket/edit/**", "/user/create",
+                        "/category/create", "/category/delete/**")
                 .hasAnyAuthority("ADMIN")
                 .requestMatchers("/ticket", "/login").permitAll()
                 .requestMatchers("/").authenticated()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and().formLogin()
                 .and().logout()
                 .and().exceptionHandling()

@@ -44,7 +44,7 @@ public class TicketRestController {
             return new ResponseEntity<>(tickets, HttpStatus.OK);
         }
         if (tickets.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<>(tickets, HttpStatus.OK);
@@ -56,6 +56,9 @@ public class TicketRestController {
         if (status != null && !status.isBlank()) {
             tickets = ticketService.findStatus(status);
             return new ResponseEntity<>(tickets, HttpStatus.OK);
+        }
+        if (tickets.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<>(tickets, HttpStatus.OK);

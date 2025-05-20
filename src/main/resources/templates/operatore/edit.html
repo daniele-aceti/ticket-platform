@@ -11,14 +11,15 @@
         th:object="${operatore}"
         method="post"
       >
+      <!-- Errore ticket da chiudere -->
         <div class="card shadow-lg rounded-4">
           <div class="card-header bg-dark text-white text-center">
-            <th:block th:if="${ErrorActive != null}">
+            <th:block th:if="${errorActive != null}">
               <div
                 class="alert alert-danger alert-dismissible fade show text-center"
                 role="alert"
               >
-                <span th:text="${ErrorActive}"></span>
+                <span th:text="${errorActive}"></span>
                 <button
                   type="button"
                   class="btn-close"
