@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +20,7 @@ public class Role {
     private Long id;
 
     @NotBlank
+    @Column(nullable = false)
     private String roleName;
 
     @ManyToMany(mappedBy = "role")

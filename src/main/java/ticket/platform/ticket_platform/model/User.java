@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -25,16 +26,20 @@ public class User {
 
     @NotBlank(message = "Non lasciare lo spazio in bianco o con spazi")
     @Size(max = 40, min = 5, message = "Inserisci un nome valido")
+    @Column(nullable = false)
     private String name;
 
     @NotBlank(message = "Non lasciare lo spazio in bianco o con spazi")
     @Size(max = 40, min = 5, message = "Inserisci una email valida")
+    @Column(nullable = false)
     private String email;
 
     @NotBlank(message = "Non lasciare lo spazio in bianco o con spazi")
     @Size(max = 40, min = 5, message = "Inserisci una password valida")
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private boolean active;
 
     @OneToMany(mappedBy = "user")

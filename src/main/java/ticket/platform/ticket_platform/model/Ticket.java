@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,13 +28,16 @@ public class Ticket {
 
     @NotBlank(message = "Inserisci un titolo corretto, il minimo dei caratteri è 5")
     @Size(min = 5, max=40)
+    @Column(nullable = false)
     private String title;
 
     @NotBlank(message = "Inserisci una descrizione corretta, il minimo dei caratteri è 5")
     @Size(min = 5, max=100)
+    @Column(nullable = false)
     private String ticketDescription;
 
     @NotBlank(message = "Seleziona almeno una delle due opzioni")
+    @Column(nullable = false)
     private String status;
 
     @NotNull(message="Inserire una data corretta")

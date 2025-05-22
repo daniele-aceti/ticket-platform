@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,10 +26,12 @@ public class Notes {
 
     @NotBlank
     @Size(min = 10, message = "Inserisci una descrizione corretta, il minimo dei caratteri è 10")
+    @Column(nullable = false)
     private String notesDescription;
 
     @NotNull(message = "Seleziona una data")
     @DateTimeFormat(pattern = "yyy-MM-dd")
+    @Column(nullable = false)
     private LocalDate notesCreationDate;
 
     @ManyToOne

@@ -20,7 +20,6 @@ public class DatabaseUserDetailsService implements UserDetailsService {
     public DatabaseUserDetailsService() {
     }
 
-    
     public DatabaseUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

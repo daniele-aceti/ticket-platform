@@ -106,7 +106,9 @@ public class TicketService {
         Optional<Ticket> optTicket = findByIdTicket(id);
         if (optTicket.isPresent()) {
             model.addAttribute("detailsTicket", optTicket.get());
-            /* cerca tutte le notes associate ad un determinato ticket */
+            // lista delle categorie
+            model.addAttribute("categoryList", optTicket.get().getCategories());
+            // cerca tutte le notes associate ad un determinato ticket //
             model.addAttribute("notesList", notesRepository.findByTicket(optTicket.get()));
             flag = true;
         }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +22,7 @@ public class Category {
 
     @NotBlank(message = "La categoria non è corretta, il massimo di caratteri consentiti è 30, il minimo è 5")
     @Size(min = 5, max = 30)
+    @Column(nullable = false)
     private String categoryName;
 
     @ManyToMany(mappedBy = "categories")

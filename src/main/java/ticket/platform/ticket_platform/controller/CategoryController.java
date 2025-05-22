@@ -36,6 +36,10 @@ public class CategoryController {
     @PostMapping("/create")
     public String createCategoryPost(@Valid @ModelAttribute("newCategory") Category formnewCategory,
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categoryList", categoryService.findAllCategories());
+            return "category/create";
+        }
         categoryService.newCategoryAndCheck(formnewCategory, redirectAttributes, bindingResult, model);
         return "redirect:/category/create";
     }

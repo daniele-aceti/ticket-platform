@@ -59,6 +59,7 @@ public class OperatoreService {
 
             //se è piena ma anche un solo ticket non è completato blocca!
             for (Ticket ticket : userTickets) {
+                //se trovo un non completato allCompleted false ed esco dal ciclo
                 if (!ticket.getStatus().equalsIgnoreCase("Completato")) {
                     allCompleted = false;
                     break;

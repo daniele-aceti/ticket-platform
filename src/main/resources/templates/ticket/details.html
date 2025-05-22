@@ -8,20 +8,22 @@
 
   <body class="bg-light">
     <div class="container py-5">
-      <div class="card p-4" th:object="${detailsTicket}">
+      <div class="card shadow rounded-4 p-4" th:object="${detailsTicket}">
         <div class="card-body">
+          <!-- Titolo -->
           <h1
-            class="card-title display-6 text-primary fw-bold mb-3 text-center"
+            class="card-title display-6 text-primary fw-bold mb-4 text-center"
             th:text="*{title}"
           ></h1>
-          <!-- Form cambio stato del ticket -->
-          <div class="dropdown mt-4 text-center">
+
+          <!-- Cambio Stato -->
+          <div class="dropdown mb-4 text-center">
             <form th:action="@{/ticket/changeStatus}" method="post">
               <input type="hidden" name="ticketId" th:value="*{id}" />
               <label for="newStatus" class="form-label fw-bold me-2">Stato:</label>
               <div class="btn-group">
                 <button
-                  class="btn btn-outline-dark dropdown-toggle"
+                  class="btn btn-outline-secondary dropdown-toggle"
                   type="button"
                   data-bs-toggle="dropdown"
                 >
@@ -29,32 +31,17 @@
                 </button>
                 <ul class="dropdown-menu">
                   <li>
-                    <button
-                      class="dropdown-item"
-                      type="submit"
-                      name="newStatus"
-                      value="Da Fare"
-                    >
+                    <button class="dropdown-item" type="submit" name="newStatus" value="Da Fare">
                       Da Fare
                     </button>
                   </li>
                   <li>
-                    <button
-                      class="dropdown-item"
-                      type="submit"
-                      name="newStatus"
-                      value="In Corso"
-                    >
+                    <button class="dropdown-item" type="submit" name="newStatus" value="In Corso">
                       In Corso
                     </button>
                   </li>
                   <li>
-                    <button
-                      class="dropdown-item"
-                      type="submit"
-                      name="newStatus"
-                      value="Completato"
-                    >
+                    <button class="dropdown-item" type="submit" name="newStatus" value="Completato">
                       Completato
                     </button>
                   </li>
@@ -65,25 +52,43 @@
 
           <hr class="my-4" />
 
+          <!-- Descrizione -->
           <h5 class="text-muted">Descrizione</h5>
           <p class="fs-5" th:text="*{ticketDescription}"></p>
 
+          <!-- Categorie -->
+          <div class="mb-4">
+            <h5 class="text-muted">Categorie</h5>
+            <div class="d-flex flex-wrap gap-2">
+              <span
+                class="badge bg-secondary-subtle text-dark-emphasis px-3 py-2 rounded-pill border"
+                th:each="category : ${categoryList}"
+                th:text="${category.categoryName}"
+              ></span>
+            </div>
+          </div>
+
           <hr class="my-4" />
 
-          <h5 class="text-muted">Utente:</h5>
-          <p class="fs-5" th:text="*{user.name}"></p>
+          <!-- Utente -->
+          <div class="mb-3">
+            <h5 class="text-muted">Utente:</h5>
+            <p class="fs-5 mb-1" th:text="*{user.name}"></p>
+            <h5 class="text-muted">Email:</h5>
+            <p class="fs-6 text-muted" th:text="*{user.email}"></p>
+          </div>
 
-          <h5 class="text-muted">Email:</h5>
-          <p class="fs-6 text-muted" th:text="*{user.email}"></p>
+          <hr class="my-4" />
 
+          <!-- Note -->
           <h5 class="text-muted mt-4">Note:</h5>
 
           <div th:if="${notesList.isEmpty()}">
-            <p>Non ci sono note</p>
+            <p class="text-muted fst-italic">Non ci sono note</p>
           </div>
 
           <div th:each="note : ${notesList}" th:unless="${notesList.isEmpty()}">
-            <div class="card mb-3">
+            <div class="card mb-3 border-start border-4 border-secondary-subtle shadow-sm">
               <div class="card-body">
                 <h6 class="card-subtitle mb-2 text-muted">
                   Nota n. <span th:text="${note.id}"></span>
@@ -96,7 +101,7 @@
                   <strong>Autore:</strong>
                   <span th:text="${note.user.name}"></span>
                 </p>
-                   <p class="mb-1">
+                <p class="mb-1">
                   <strong>Data di Creazione:</strong>
                   <span th:text="${note.notesCreationDate}"></span>
                 </p>
@@ -104,6 +109,7 @@
             </div>
           </div>
 
+          <!-- Torna alla lista -->
           <div class="mt-4 text-center">
             <a class="btn btn-outline-secondary" th:href="@{/ticket}">← Torna alla lista</a>
           </div>
