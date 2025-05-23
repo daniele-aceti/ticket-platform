@@ -16,6 +16,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -27,12 +28,12 @@ public class Ticket {
     private Long id;
 
     @NotBlank(message = "Inserisci un titolo corretto, il minimo dei caratteri è 5")
-    @Size(min = 5, max=40)
+    @Size(min = 5, max = 40)
     @Column(nullable = false)
     private String title;
 
     @NotBlank(message = "Inserisci una descrizione corretta, il minimo dei caratteri è 5")
-    @Size(min = 5, max=100)
+    @Size(min = 5, max = 100)
     @Column(nullable = false)
     private String ticketDescription;
 
@@ -40,7 +41,7 @@ public class Ticket {
     @Column(nullable = false)
     private String status;
 
-    @NotNull(message="Inserire una data corretta")
+    @NotNull(message = "Inserire una data corretta")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate ticketCreationDate;
 
@@ -52,6 +53,7 @@ public class Ticket {
     @OneToMany(mappedBy = "ticket")
     private List<Notes> notes;
 
+    @NotEmpty(message = "Devi selezionare almeno una categoria")
     @ManyToMany
     @JoinTable(
             name = "ticket_category",
