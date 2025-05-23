@@ -23,13 +23,8 @@ public class TicketRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Ticket>> listTicket(@RequestParam(name = "keyword", required = false) String keyword) {
-        List<Ticket> tickets;
-        if (keyword != null && !keyword.isBlank()) {
-            tickets = ticketService.findTitle(keyword);
-        } else {
-            tickets = ticketService.findAllTicket();
-        }
+    public ResponseEntity<List<Ticket>> listTicket() {
+        List<Ticket> tickets = ticketService.findAllTicket();
         if (tickets.isEmpty()) {
             return new ResponseEntity<>(tickets, HttpStatus.NOT_FOUND);
         }
