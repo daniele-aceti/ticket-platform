@@ -2,6 +2,7 @@ package ticket.platform.ticket_platform.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +19,8 @@ public class OperatoreService {
     private final UserRepository userRepository;
     private final TicketRepository ticketRepository;
 
-    public OperatoreService(UserRepository userRepository,TicketRepository ticketRepository) {
+    @Autowired
+    public OperatoreService(UserRepository userRepository, TicketRepository ticketRepository) {
         this.userRepository = userRepository;
         this.ticketRepository = ticketRepository;
     }
@@ -72,6 +74,10 @@ public class OperatoreService {
                     user.setActive(newDataUser.isActive());
                     changed = true;
                 }
+            } else if (!allCompleted && !user.isActive()) {//se non sono tutti completi ma sono off-line permetti on-line
+                user.setActive(newDataUser.isActive());
+                changed = true;
+
             } else {
                 redirectAttribute.addFlashAttribute("errorActive",
                         "Non puoi scollegarti: ci sono ancora ticket da chiudere.");
